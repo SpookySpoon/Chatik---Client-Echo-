@@ -1,6 +1,8 @@
 #include <QDateTime>
+#include <QThread>
 #include "chatwindow.h"
-#include "TcpMsgClient.h"
+#include "tcpmsgclient.h"
+
 
 
 //этот класс для работы с консолью надо бы запихать в отдельный тред, а то он так вместе с Main() делит один тред
@@ -17,7 +19,8 @@ void ChatWindow::inputToVoid()
     QStringList serverAdress=input.split(" ");
     if(serverAdress.at(0)=="\\connect"&&serverAdress.count()==3)
     {
-        tcpClient->setServerAdress(serverAdress);
+
+        emit sendServerAdress(input);
     }
     else
     {
@@ -31,14 +34,13 @@ void ChatWindow::inputToServer()
     QString input=txtS.readLine();
     if(input!="Quit")
     {
-        tcpClient->setInput(QString("%1[::]%2")
+        emit sendServerInput(QString("%1[::]%2")
         .arg(input)
         .arg(QDateTime::currentDateTimeUtc().addSecs(3600*3).toString("hh:mm:ss")));//К сообщению добавляется время отправки
         //взято глобальное время и доведено до московского. Не стал закапываться с конвертацией локального времени между пользователями
     }
     else
     {
-        qDebug()<<"You have quit the server.";
-        inputToVoid();
+        emit initDisconnect();
     }
 }

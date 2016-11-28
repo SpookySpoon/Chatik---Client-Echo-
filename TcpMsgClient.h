@@ -1,6 +1,7 @@
 #pragma once
 #include <QObject>
 #include <QDataStream>
+#include <QByteArray>
 #include <QTcpSocket>
 
 
@@ -9,26 +10,21 @@ class ChatWindow;
 class TcpMsgClient : public QTcpSocket
 {
     Q_OBJECT
+    bool connectionStatus=false;
+    QDataStream in;
+
 public:
     explicit TcpMsgClient(QObject *parent = nullptr);
-    void setServerAdress(const QStringList& message);
-    void setInput(const QString& message);
+    template<typename T>
+    QByteArray protoToByteArray(const T& proto);
 public slots:
-    void getServer();
+    void getServer(const QString&);
+    void fireTheMessage(const QString&);
     void readComingMessage();
-    void fireTheMessage();
+    void quitConnection();
+    void uponDistonnect();
 signals:
     void requestInputVoid();
     void requestInputServer();
-    void serverSet();
-    void inputSet();
-private:
 
-    void moveClientToThread();
-    ChatWindow* consoleHandler= nullptr;
-    QString inputString;
-    bool connectionStatus=false;
-    QString messageReceived;
-    QDataStream in;
-    QStringList serverAdress;
 };

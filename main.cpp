@@ -1,14 +1,9 @@
-#include <QCoreApplication>
-#include <QTextStream>
-#include <QThread>
-#include "TcpMsgClient.h"
+#include <QApplication>
+#include "chatclient.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication app(argc, argv);
-    qDebug()<<"To establish connection, type \"\\connect *adress*(space)*port number*\".";
-    qDebug()<<"Type \"Quit\" to exit server.\n";
-    new TcpMsgClient;
-
+    QApplication app(argc, argv);
+    ChatClient newClient;
     return app.exec();
 }

@@ -3,16 +3,19 @@
 
 class TcpMsgClient;
 
-
 class ChatWindow : public QObject
 {
     Q_OBJECT
+    TcpMsgClient* tcpClient= nullptr;
 public:
     ChatWindow(TcpMsgClient* someClient= nullptr, QObject *parent = nullptr);
 public slots:
     void inputToVoid();
     void inputToServer();
-private:
-    TcpMsgClient* tcpClient= nullptr;
+signals:
+    void sendServerAdress(const QString&);
+    void sendServerInput(const QString&);
+    void initDisconnect();
+
 };
 

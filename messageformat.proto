@@ -1,0 +1,6 @@
+syntax = "proto3";
+package chatMes;
+message hello
+{
+	string data=1;
+}

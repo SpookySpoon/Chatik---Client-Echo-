@@ -1,42 +1,22 @@
 #include <QHostAddress>
 #include <QDateTime>
 #include <QThread>
-#include "TcpMsgClient.h"
+#include "tcpmsgclient.h"
 #include "chatwindow.h"
-
+#include "messageformat.pb.h"
+#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
+#include <google/protobuf/io/coded_stream.h>
 
 TcpMsgClient::TcpMsgClient(QObject *parent):QTcpSocket(parent)
 {
-    consoleHandler=new ChatWindow(this);
-    moveClientToThread();
 }
 
-//STEP 1
-void TcpMsgClient::moveClientToThread()
-{
-    QThread* myThread = new QThread;
-    connect(myThread,SIGNAL(started()),consoleHandler,SLOT(inputToVoid()));
-    connect(this,SIGNAL(requestInputVoid()),consoleHandler,SLOT(inputToVoid()));
-    connect(this,SIGNAL(requestInputServer()),consoleHandler,SLOT(inputToServer()));
-    connect(this,SIGNAL(serverSet()),this,SLOT(getServer()));
-    connect(this,SIGNAL(inputSet()),this,SLOT(fireTheMessage()));
-    connect(this,SIGNAL(destroyed(QObject*)), myThread, SLOT(quit()));
-    connect(myThread,SIGNAL(finished()),myThread,SLOT(deleteLater()));
-    connect(this,SIGNAL(readyRead()), this, SLOT(readComingMessage()));
-    this->moveToThread(myThread);
-    myThread->start();
-}
-//STEP 2
-void TcpMsgClient::setServerAdress(const QStringList& serAd)
-{
-    serverAdress=serAd;
-    emit serverSet();
-}
 //STEP 3
-void TcpMsgClient::getServer()
+void TcpMsgClient::getServer(const QString& serAdress)
 {
-    this->connectToHost(QHostAddress(serverAdress.at(1)),
-                             serverAdress.at(2).toInt());
+    QStringList splitAdress = serAdress.split(" ");
+    this->connectToHost(QHostAddress(splitAdress.at(1)),
+                             splitAdress.at(2).toInt());
     qDebug("Connecting...\n");
     if(this->waitForConnected(3000))
     {
@@ -50,44 +30,89 @@ void TcpMsgClient::getServer()
         emit requestInputVoid();
     }
 }
-//STEP 4
-void TcpMsgClient::setInput(const QString& inp)
-{
-        inputString=inp;
-        emit inputSet();
-}
+
 //STEP 5
-void TcpMsgClient::fireTheMessage()
+void TcpMsgClient::fireTheMessage(const QString& inp)
 {
+    //        QByteArray block;                                         BEFORE
+    //        QDataStream out(&block, QIODevice::WriteOnly);            BEFORE
+    //        out << inp;                                               BEFORE
+    //        this->write(block);                                       BEFORE
     if(connectionStatus)
     {
-        QByteArray block;
-        QDataStream out(&block, QIODevice::WriteOnly);
-        out << inputString;
-        this->write(block);
+        chatMes::hello protoMessage;//                              new protobuf
+        {
+            protoMessage.set_data(inp.toLatin1().data());//       new protobuf
+        }
+        int siz = protoMessage.ByteSize();//                              new protobuf
+        char *pkt = new char [siz];//                              new protobuf
+        google::protobuf::io::ArrayOutputStream aos(pkt,siz);//                              new protobuf
+        google::protobuf::io::CodedOutputStream* coded_output = new google::protobuf::io::CodedOutputStream(&aos);//                              new protobuf
+        coded_output->WriteVarint32(siz);//                              new protobuf
+        protoMessage.SerializeToCodedStream(coded_output);//                              new protobuf
+        this->write(pkt);
         emit requestInputServer();
+    }
+    else
+    {
+        qDebug()<<"Sending failed. Redirecting you to the void";
+        emit requestInputVoid();
+    }
+}
+
+//STEP 6-сам по себе шаг
+void TcpMsgClient::readComingMessage()
+{
+    chatMes::hello protoMessage;//       new protobuf
+    google::protobuf::uint32 size;//       new protobuf
+    QByteArray incomingMessage=this->readAll();//       new protobuf
+    google::protobuf::io::ArrayInputStream ais(incomingMessage,incomingMessage.count());//       new protobuf
+    google::protobuf::io::CodedInputStream coded_input(&ais);//       new protobuf
+    coded_input.ReadVarint32(&size);//       new protobuf
+    protoMessage.ParseFromCodedStream(&coded_input);//       new protobuf
+    QString result = QString::fromStdString(protoMessage.DebugString());//       new protobuf
+    qDebug()<<result;//       new protobuf
+
+
+//    QString messageReceived;
+//    in.setDevice(this);
+//    in >> messageReceived;
+//    qDebug()<<messageReceived;
+}
+
+void TcpMsgClient::quitConnection()
+{
+    connectionStatus=false;
+    qDebug()<<"Disconnecting...";
+    this->disconnectFromHost();
+}
+
+void TcpMsgClient::uponDistonnect()
+{
+    if(!connectionStatus)
+    {
+        qDebug()<<"You have successfully disconnected...";
+        emit requestInputVoid();//этот сигнал не стоит в конце файла, потому что если соединение упало, а connectionStatus = true
+        //это только если сервер упал. В таком случае я отправлю сообщение, оно не пройдет и я попаду на строчку 46
     }
     else
     {
         connectionStatus=false;
         qDebug()<<"You have been disconnected...";
-        emit requestInputVoid();
     }
 }
-//STEP 6-сам по себе шаг
-void TcpMsgClient::readComingMessage()
+
+template<typename T>
+QByteArray protoToByteArray(const T& proto)
 {
-    in.setDevice(this);
-    in.setVersion(QDataStream::Qt_4_1);
-
-    in.startTransaction();
-    in >> messageReceived;
-
-    if (!in.commitTransaction())
-        return;
-    qDebug()<<messageReceived;
+ if (!proto.IsInitialized()) {
+  return QByteArray();
+ }
+ QByteArray outBA;
+ outBA.resize(proto.ByteSize());
+ proto.SerializeToArray(outBA.data(), outBA.size()+1);
+ return outBA;
 }
-
 
 
 
