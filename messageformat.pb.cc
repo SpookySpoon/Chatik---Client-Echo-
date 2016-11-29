@@ -36,8 +36,10 @@ void protobuf_AssignDesc_messageformat_2eproto() {
       "messageformat.proto");
   GOOGLE_CHECK(file != NULL);
   hello_descriptor_ = file->message_type(0);
-  static const int hello_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(hello, data_),
+  static const int hello_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(hello, mestext_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(hello, datetime_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(hello, nickname_),
   };
   hello_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -82,8 +84,9 @@ void protobuf_AddDesc_messageformat_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\023messageformat.proto\022\007chatMes\"\025\n\005hello\022"
-    "\014\n\004data\030\001 \001(\tb\006proto3", 61);
+    "\n\023messageformat.proto\022\007chatMes\"<\n\005hello\022"
+    "\017\n\007mesText\030\001 \001(\t\022\020\n\010dateTime\030\002 \001(\004\022\020\n\010ni"
+    "ckName\030\003 \001(\tb\006proto3", 100);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "messageformat.proto", &protobuf_RegisterTypes);
   hello::default_instance_ = new hello();
@@ -101,7 +104,9 @@ struct StaticDescriptorInitializer_messageformat_2eproto {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int hello::kDataFieldNumber;
+const int hello::kMesTextFieldNumber;
+const int hello::kDateTimeFieldNumber;
+const int hello::kNickNameFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 hello::hello()
@@ -126,7 +131,9 @@ void hello::SharedCtor() {
     _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
-  data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  mestext_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  datetime_ = GOOGLE_ULONGLONG(0);
+  nickname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 hello::~hello() {
@@ -135,7 +142,8 @@ hello::~hello() {
 }
 
 void hello::SharedDtor() {
-  data_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  mestext_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  nickname_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != default_instance_) {
   }
 }
@@ -167,7 +175,9 @@ hello* hello::New(::google::protobuf::Arena* arena) const {
 
 void hello::Clear() {
 // @@protoc_insertion_point(message_clear_start:chatMes.hello)
-  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  mestext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  datetime_ = GOOGLE_ULONGLONG(0);
+  nickname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 bool hello::MergePartialFromCodedStream(
@@ -180,15 +190,47 @@ bool hello::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string data = 1;
+      // optional string mesText = 1;
       case 1: {
         if (tag == 10) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_data()));
+                input, this->mutable_mestext()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->data().data(), this->data().length(),
+            this->mestext().data(), this->mestext().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "chatMes.hello.data"));
+            "chatMes.hello.mesText"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_dateTime;
+        break;
+      }
+
+      // optional uint64 dateTime = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_dateTime:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &datetime_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(26)) goto parse_nickName;
+        break;
+      }
+
+      // optional string nickName = 3;
+      case 3: {
+        if (tag == 26) {
+         parse_nickName:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_nickname()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->nickname().data(), this->nickname().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "chatMes.hello.nickName"));
         } else {
           goto handle_unusual;
         }
@@ -220,14 +262,29 @@ failure:
 void hello::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:chatMes.hello)
-  // optional string data = 1;
-  if (this->data().size() > 0) {
+  // optional string mesText = 1;
+  if (this->mestext().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->data().data(), this->data().length(),
+      this->mestext().data(), this->mestext().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "chatMes.hello.data");
+      "chatMes.hello.mesText");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->data(), output);
+      1, this->mestext(), output);
+  }
+
+  // optional uint64 dateTime = 2;
+  if (this->datetime() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->datetime(), output);
+  }
+
+  // optional string nickName = 3;
+  if (this->nickname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->nickname().data(), this->nickname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "chatMes.hello.nickName");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      3, this->nickname(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:chatMes.hello)
@@ -236,15 +293,31 @@ void hello::SerializeWithCachedSizes(
 ::google::protobuf::uint8* hello::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:chatMes.hello)
-  // optional string data = 1;
-  if (this->data().size() > 0) {
+  // optional string mesText = 1;
+  if (this->mestext().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->data().data(), this->data().length(),
+      this->mestext().data(), this->mestext().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "chatMes.hello.data");
+      "chatMes.hello.mesText");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->data(), target);
+        1, this->mestext(), target);
+  }
+
+  // optional uint64 dateTime = 2;
+  if (this->datetime() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->datetime(), target);
+  }
+
+  // optional string nickName = 3;
+  if (this->nickname().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->nickname().data(), this->nickname().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "chatMes.hello.nickName");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->nickname(), target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:chatMes.hello)
@@ -255,11 +328,25 @@ int hello::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:chatMes.hello)
   int total_size = 0;
 
-  // optional string data = 1;
-  if (this->data().size() > 0) {
+  // optional string mesText = 1;
+  if (this->mestext().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->data());
+        this->mestext());
+  }
+
+  // optional uint64 dateTime = 2;
+  if (this->datetime() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt64Size(
+        this->datetime());
+  }
+
+  // optional string nickName = 3;
+  if (this->nickname().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->nickname());
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -290,9 +377,16 @@ void hello::MergeFrom(const hello& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
-  if (from.data().size() > 0) {
+  if (from.mestext().size() > 0) {
 
-    data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
+    mestext_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.mestext_);
+  }
+  if (from.datetime() != 0) {
+    set_datetime(from.datetime());
+  }
+  if (from.nickname().size() > 0) {
+
+    nickname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.nickname_);
   }
 }
 
@@ -320,7 +414,9 @@ void hello::Swap(hello* other) {
   InternalSwap(other);
 }
 void hello::InternalSwap(hello* other) {
-  data_.Swap(&other->data_);
+  mestext_.Swap(&other->mestext_);
+  std::swap(datetime_, other->datetime_);
+  nickname_.Swap(&other->nickname_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -336,48 +432,106 @@ void hello::InternalSwap(hello* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // hello
 
-// optional string data = 1;
-void hello::clear_data() {
-  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional string mesText = 1;
+void hello::clear_mestext() {
+  mestext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- const ::std::string& hello::data() const {
-  // @@protoc_insertion_point(field_get:chatMes.hello.data)
-  return data_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+ const ::std::string& hello::mestext() const {
+  // @@protoc_insertion_point(field_get:chatMes.hello.mesText)
+  return mestext_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void hello::set_data(const ::std::string& value) {
+ void hello::set_mestext(const ::std::string& value) {
   
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:chatMes.hello.data)
+  mestext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:chatMes.hello.mesText)
 }
- void hello::set_data(const char* value) {
+ void hello::set_mestext(const char* value) {
   
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:chatMes.hello.data)
+  mestext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:chatMes.hello.mesText)
 }
- void hello::set_data(const char* value, size_t size) {
+ void hello::set_mestext(const char* value, size_t size) {
   
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  mestext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:chatMes.hello.data)
+  // @@protoc_insertion_point(field_set_pointer:chatMes.hello.mesText)
 }
- ::std::string* hello::mutable_data() {
+ ::std::string* hello::mutable_mestext() {
   
-  // @@protoc_insertion_point(field_mutable:chatMes.hello.data)
-  return data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:chatMes.hello.mesText)
+  return mestext_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- ::std::string* hello::release_data() {
-  // @@protoc_insertion_point(field_release:chatMes.hello.data)
+ ::std::string* hello::release_mestext() {
+  // @@protoc_insertion_point(field_release:chatMes.hello.mesText)
   
-  return data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return mestext_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void hello::set_allocated_data(::std::string* data) {
-  if (data != NULL) {
+ void hello::set_allocated_mestext(::std::string* mestext) {
+  if (mestext != NULL) {
     
   } else {
     
   }
-  data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
-  // @@protoc_insertion_point(field_set_allocated:chatMes.hello.data)
+  mestext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), mestext);
+  // @@protoc_insertion_point(field_set_allocated:chatMes.hello.mesText)
+}
+
+// optional uint64 dateTime = 2;
+void hello::clear_datetime() {
+  datetime_ = GOOGLE_ULONGLONG(0);
+}
+ ::google::protobuf::uint64 hello::datetime() const {
+  // @@protoc_insertion_point(field_get:chatMes.hello.dateTime)
+  return datetime_;
+}
+ void hello::set_datetime(::google::protobuf::uint64 value) {
+  
+  datetime_ = value;
+  // @@protoc_insertion_point(field_set:chatMes.hello.dateTime)
+}
+
+// optional string nickName = 3;
+void hello::clear_nickname() {
+  nickname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& hello::nickname() const {
+  // @@protoc_insertion_point(field_get:chatMes.hello.nickName)
+  return nickname_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void hello::set_nickname(const ::std::string& value) {
+  
+  nickname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:chatMes.hello.nickName)
+}
+ void hello::set_nickname(const char* value) {
+  
+  nickname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:chatMes.hello.nickName)
+}
+ void hello::set_nickname(const char* value, size_t size) {
+  
+  nickname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:chatMes.hello.nickName)
+}
+ ::std::string* hello::mutable_nickname() {
+  
+  // @@protoc_insertion_point(field_mutable:chatMes.hello.nickName)
+  return nickname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* hello::release_nickname() {
+  // @@protoc_insertion_point(field_release:chatMes.hello.nickName)
+  
+  return nickname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void hello::set_allocated_nickname(::std::string* nickname) {
+  if (nickname != NULL) {
+    
+  } else {
+    
+  }
+  nickname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), nickname);
+  // @@protoc_insertion_point(field_set_allocated:chatMes.hello.nickName)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

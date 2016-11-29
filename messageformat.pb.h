@@ -100,23 +100,42 @@ class hello : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   // accessors -------------------------------------------------------
 
-  // optional string data = 1;
-  void clear_data();
-  static const int kDataFieldNumber = 1;
-  const ::std::string& data() const;
-  void set_data(const ::std::string& value);
-  void set_data(const char* value);
-  void set_data(const char* value, size_t size);
-  ::std::string* mutable_data();
-  ::std::string* release_data();
-  void set_allocated_data(::std::string* data);
+  // optional string mesText = 1;
+  void clear_mestext();
+  static const int kMesTextFieldNumber = 1;
+  const ::std::string& mestext() const;
+  void set_mestext(const ::std::string& value);
+  void set_mestext(const char* value);
+  void set_mestext(const char* value, size_t size);
+  ::std::string* mutable_mestext();
+  ::std::string* release_mestext();
+  void set_allocated_mestext(::std::string* mestext);
+
+  // optional uint64 dateTime = 2;
+  void clear_datetime();
+  static const int kDateTimeFieldNumber = 2;
+  ::google::protobuf::uint64 datetime() const;
+  void set_datetime(::google::protobuf::uint64 value);
+
+  // optional string nickName = 3;
+  void clear_nickname();
+  static const int kNickNameFieldNumber = 3;
+  const ::std::string& nickname() const;
+  void set_nickname(const ::std::string& value);
+  void set_nickname(const char* value);
+  void set_nickname(const char* value, size_t size);
+  ::std::string* mutable_nickname();
+  ::std::string* release_nickname();
+  void set_allocated_nickname(::std::string* nickname);
 
   // @@protoc_insertion_point(class_scope:chatMes.hello)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  ::google::protobuf::internal::ArenaStringPtr data_;
+  ::google::protobuf::internal::ArenaStringPtr mestext_;
+  ::google::protobuf::uint64 datetime_;
+  ::google::protobuf::internal::ArenaStringPtr nickname_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_messageformat_2eproto();
   friend void protobuf_AssignDesc_messageformat_2eproto();
@@ -133,48 +152,106 @@ class hello : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // hello
 
-// optional string data = 1;
-inline void hello::clear_data() {
-  data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// optional string mesText = 1;
+inline void hello::clear_mestext() {
+  mestext_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& hello::data() const {
-  // @@protoc_insertion_point(field_get:chatMes.hello.data)
-  return data_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline const ::std::string& hello::mestext() const {
+  // @@protoc_insertion_point(field_get:chatMes.hello.mesText)
+  return mestext_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void hello::set_data(const ::std::string& value) {
+inline void hello::set_mestext(const ::std::string& value) {
   
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:chatMes.hello.data)
+  mestext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:chatMes.hello.mesText)
 }
-inline void hello::set_data(const char* value) {
+inline void hello::set_mestext(const char* value) {
   
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:chatMes.hello.data)
+  mestext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:chatMes.hello.mesText)
 }
-inline void hello::set_data(const char* value, size_t size) {
+inline void hello::set_mestext(const char* value, size_t size) {
   
-  data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  mestext_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:chatMes.hello.data)
+  // @@protoc_insertion_point(field_set_pointer:chatMes.hello.mesText)
 }
-inline ::std::string* hello::mutable_data() {
+inline ::std::string* hello::mutable_mestext() {
   
-  // @@protoc_insertion_point(field_mutable:chatMes.hello.data)
-  return data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:chatMes.hello.mesText)
+  return mestext_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* hello::release_data() {
-  // @@protoc_insertion_point(field_release:chatMes.hello.data)
+inline ::std::string* hello::release_mestext() {
+  // @@protoc_insertion_point(field_release:chatMes.hello.mesText)
   
-  return data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return mestext_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void hello::set_allocated_data(::std::string* data) {
-  if (data != NULL) {
+inline void hello::set_allocated_mestext(::std::string* mestext) {
+  if (mestext != NULL) {
     
   } else {
     
   }
-  data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), data);
-  // @@protoc_insertion_point(field_set_allocated:chatMes.hello.data)
+  mestext_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), mestext);
+  // @@protoc_insertion_point(field_set_allocated:chatMes.hello.mesText)
+}
+
+// optional uint64 dateTime = 2;
+inline void hello::clear_datetime() {
+  datetime_ = GOOGLE_ULONGLONG(0);
+}
+inline ::google::protobuf::uint64 hello::datetime() const {
+  // @@protoc_insertion_point(field_get:chatMes.hello.dateTime)
+  return datetime_;
+}
+inline void hello::set_datetime(::google::protobuf::uint64 value) {
+  
+  datetime_ = value;
+  // @@protoc_insertion_point(field_set:chatMes.hello.dateTime)
+}
+
+// optional string nickName = 3;
+inline void hello::clear_nickname() {
+  nickname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& hello::nickname() const {
+  // @@protoc_insertion_point(field_get:chatMes.hello.nickName)
+  return nickname_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void hello::set_nickname(const ::std::string& value) {
+  
+  nickname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:chatMes.hello.nickName)
+}
+inline void hello::set_nickname(const char* value) {
+  
+  nickname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:chatMes.hello.nickName)
+}
+inline void hello::set_nickname(const char* value, size_t size) {
+  
+  nickname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:chatMes.hello.nickName)
+}
+inline ::std::string* hello::mutable_nickname() {
+  
+  // @@protoc_insertion_point(field_mutable:chatMes.hello.nickName)
+  return nickname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* hello::release_nickname() {
+  // @@protoc_insertion_point(field_release:chatMes.hello.nickName)
+  
+  return nickname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void hello::set_allocated_nickname(::std::string* nickname) {
+  if (nickname != NULL) {
+    
+  } else {
+    
+  }
+  nickname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), nickname);
+  // @@protoc_insertion_point(field_set_allocated:chatMes.hello.nickName)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
