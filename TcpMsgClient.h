@@ -1,7 +1,5 @@
 #pragma once
-#include <QObject>
 #include <QTcpSocket>
-
 
 class TcpMsgClient : public QTcpSocket
 {
@@ -18,5 +16,4 @@ public slots:
 signals:
     void requestInputVoid();
     void requestInputServer();
-
 };

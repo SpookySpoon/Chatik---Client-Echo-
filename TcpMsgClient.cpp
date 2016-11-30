@@ -2,9 +2,8 @@
 #include <QDateTime>
 #include <QTextStream>
 #include "tcpmsgclient.h"
+#include "protobytes.h"
 #include "messageformat.pb.h"
-#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
-#include <google/protobuf/io/coded_stream.h>
 
 TcpMsgClient::TcpMsgClient(QObject *parent):QTcpSocket(parent)
 {
@@ -40,13 +39,8 @@ void TcpMsgClient::fireTheMessage(const QString& inp)
             protoMessage.set_mestext(inp.toStdString());
             protoMessage.set_nickname("");
         }
-        int siz = protoMessage.ByteSize()+1;
-        char *pkt = new char [siz];
-        google::protobuf::io::ArrayOutputStream aos(pkt,siz);
-        google::protobuf::io::CodedOutputStream* coded_output = new google::protobuf::io::CodedOutputStream(&aos);
-        coded_output->WriteVarint32(siz);
-        protoMessage.SerializeToCodedStream(coded_output);
-        this->write(pkt);
+        QByteArray exportBytes=ProtoBytes<chatMes::hello>::protoToByteArray(protoMessage);
+        this->write(exportBytes);
         emit requestInputServer();
     }
     else
@@ -59,12 +53,8 @@ void TcpMsgClient::fireTheMessage(const QString& inp)
 void TcpMsgClient::readComingMessage()
 {
     chatMes::hello protoMessage;
-    google::protobuf::uint32 size;
     QByteArray incomingMessage=this->readAll();
-    google::protobuf::io::ArrayInputStream ais(incomingMessage,incomingMessage.count());
-    google::protobuf::io::CodedInputStream coded_input(&ais);
-    coded_input.ReadVarint32(&size);
-    protoMessage.ParseFromCodedStream(&coded_input);
+    protoMessage=ProtoBytes<chatMes::hello>::protoFromByteArray(incomingMessage);
     QString msgTime=QDateTime::fromMSecsSinceEpoch(protoMessage.datetime()*1000).toString("hh:mm:ss");
     QString result = QString("<(%1)%2>: %3").arg(msgTime).arg(QString::fromStdString(protoMessage.nickname())).arg(QString::fromStdString(protoMessage.mestext()));
     cout<<result<<endl;

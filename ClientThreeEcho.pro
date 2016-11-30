@@ -24,7 +24,8 @@ HEADERS += \
     chatwindow.h \
     tcpmsgclient.h \
     chatclient.h \
-    messageformat.pb.h
+    messageformat.pb.h \
+    protobytes.h
 
 #LIBS += -lprotobuf
 #LIBS += -LD:\Games\MSYS2\mingw64\lib -lprotobuf
